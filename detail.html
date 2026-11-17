@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Detail Paket | Mulintrip</title>
+<meta name="description" content="Detail paket Mulintrip: itinerary, fasilitas, dan syarat ketentuan.">
+<meta property="og:image" content="logo.png">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="paket">
+
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero" style="padding-bottom:70px">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Beranda</a> / <a href="paket.html">Paket Wisata</a> / <span id="crumb">Detail</span></div>
+      <h1 id="title">Detail Paket</h1>
+      <p id="subtitle"></p>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap" id="detail"></div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div class="cta-box">
+        <div>
+          <h2>Masih ada yang mau ditanyakan?</h2>
+          <p>Tim kami siap bantu cek jadwal, harga terbaru, dan sisa kursi.</p>
+        </div>
+        <a class="btn btn-wa" data-wa="Halo Mulintrip, saya ingin bertanya tentang paket wisata." href="#">Tanya lewat WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="site.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const root = document.getElementById("detail");
+    const p = findPackage(new URLSearchParams(location.search).get("p"));
+
+    if (!p) {
+      root.innerHTML = `<div class="d-box" style="margin-top:-34px;position:relative;z-index:2;text-align:center">
+        <h2>Paket tidak ditemukan</h2>
+        <p>Paket yang Anda cari mungkin sudah tidak tersedia.</p>
+        <a class="btn btn-wa" href="paket.html" style="margin-top:12px">Lihat semua paket</a></div>`;
+      return;
+    }
+
+    document.title = `${p.name} | ${SITE.name}`;
+    document.getElementById("crumb").textContent = p.name;
+    document.getElementById("title").textContent = p.name;
+    document.getElementById("subtitle").textContent = `${p.days} hari ${p.nights} malam · ${p.dest}`;
+
+    const li = arr => (arr || []).map(x => `<li>${esc(x)}</li>`).join("");
+    const msg = `Halo Mulintrip, saya ingin tanya jadwal dan harga terbaru paket ${p.name} (${p.days} hari ${p.nights} malam).`;
+    const priceHtml = p.price
+      ? `<small>Mulai dari</small><strong>${rupiah(p.price)}</strong> <span>/orang</span>`
+      : `<small>Harga</small><strong>Hubungi kami</strong>`;
+
+    root.innerHTML = `
+      <div class="d-grid">
+        <div class="d-main">
+          ${p.image ? `<img class="d-img" src="${p.image}" alt="Brosur ${esc(p.name)}" onerror="this.style.display='none'">` : ""}
+          ${p.schedule ? `<div class="d-box"><h2>Jadwal Keberangkatan</h2><ul class="plain">${li(p.schedule)}</ul></div>` : ""}
+          ${p.itinerary ? `<div class="d-box"><h2>Itinerary</h2>
+            ${p.itinerary.map(d => `<details open><summary>${esc(d[0])}</summary><p>${esc(d[1])}</p>${d[2] ? `<p><strong><em>${esc(d[2])}</em></strong></p>` : ""}</details>`).join("")}
+          </div>` : ""}
+          <div class="d-box"><h2>Fasilitas Paket</h2>
+            <div class="d-two">
+              <div><h3>Termasuk</h3><ul class="ok">${li(p.included)}</ul></div>
+              <div><h3>Tidak termasuk</h3><ul class="no">${li(p.excluded)}</ul></div>
+            </div>
+            ${p.bonus ? `<h3 style="margin-top:18px">Bonus</h3><ul class="ok">${li(p.bonus)}</ul>` : ""}
+          </div>
+          ${p.costs ? `<div class="d-box"><h2>Biaya dan Pembayaran</h2><ul class="plain">${li(p.costs)}</ul></div>` : ""}
+          <div class="d-box"><h2>Syarat dan Ketentuan</h2><ol class="terms">${li(p.terms)}</ol></div>
+        </div>
+        <aside class="d-side">
+          <div class="d-box">
+            <div class="d-price">${priceHtml}</div>
+            <div class="d-meta"><span>${p.days} hari ${p.nights} malam</span><span>${esc(p.type)}</span></div>
+            <p style="color:var(--muted)">Harga dan jadwal bisa berubah mengikuti musim. Konfirmasi dulu lewat WhatsApp ya.</p>
+            <a class="btn btn-wa" href="${wa(msg)}" target="_blank" rel="noopener">Pesan lewat WhatsApp</a>
+            <a class="btn btn-outline" href="paket.html">Lihat paket lain</a>
+          </div>
+        </aside>
+      </div>`;
+  });
+</script>
+</body>
+</html>
