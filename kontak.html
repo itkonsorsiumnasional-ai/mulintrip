@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kontak | Mulintrip</title>
+<meta name="description" content="Hubungi Mulintrip untuk tanya paket wisata, jadwal keberangkatan, harga terbaru, dan sisa kursi.">
+<meta property="og:image" content="logo.png">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="kontak">
+
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero" style="padding-bottom:70px">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Beranda</a> / <span>Kontak</span></div>
+      <h1>Hubungi Kami</h1>
+      <p>Tanya paket, jadwal, harga terbaru, atau sisa kursi. Tim kami siap membantu.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <div class="k-grid">
+        <div class="k-box">
+          <h2>Informasi Kontak</h2>
+          <p class="k-sub">Pilih cara yang paling nyaman untuk Anda.</p>
+          <div class="k-list" id="kList"></div>
+          <div class="k-hours" id="kHours"></div>
+        </div>
+
+        <div class="k-box">
+          <h2>Kirim Pertanyaan</h2>
+          <p class="k-sub">Isi formulir singkat ini, pesan Anda akan langsung terbuka di WhatsApp.</p>
+          <form class="k-form" id="kForm" novalidate>
+            <div class="k-row">
+              <div><label for="fNama">Nama</label><input id="fNama" type="text" placeholder="Nama lengkap" autocomplete="name" required></div>
+              <div><label for="fHp">No. WhatsApp</label><input id="fHp" type="tel" placeholder="08xxxxxxxxxx" autocomplete="tel"></div>
+            </div>
+            <div><label for="fEmail">Email <span style="color:#c0392b">*</span></label><input id="fEmail" type="email" placeholder="nama@email.com" autocomplete="email" required></div>
+            <div><label for="fPaket">Paket / tujuan yang diminati</label><input id="fPaket" type="text" placeholder="Contoh: Tour Malaysia Singapore 4D3N"></div>
+            <div class="k-row">
+              <div><label for="fTgl">Rencana keberangkatan</label><input id="fTgl" type="date"></div>
+              <div><label for="fOrang">Jumlah peserta</label><input id="fOrang" type="number" min="1" placeholder="Contoh: 4"></div>
+            </div>
+            <div><label for="fKota">Kota keberangkatan</label><input id="fKota" type="text" placeholder="Contoh: Jakarta"></div>
+            <div><label for="fPesan">Pesan</label><textarea id="fPesan" placeholder="Tulis pertanyaan Anda di sini"></textarea></div>
+            <button type="submit" class="btn btn-wa">Kirim lewat WhatsApp</button>
+            <p class="k-note">Harga dan jadwal dapat berubah mengikuti musim. Kami akan konfirmasi lewat WhatsApp.</p>
+          </form>
+        </div>
+      </div>
+
+      <div id="kMap"></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div class="cta-box">
+        <div>
+          <h2>Mau langsung ngobrol?</h2>
+          <p>Klik tombol di samping, kami balas secepatnya di jam operasional.</p>
+        </div>
+        <a class="btn btn-wa" data-wa="Halo Mulintrip, saya ingin bertanya tentang paket wisata." href="#">Chat WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="site.js"></script>
+<script>
+  /* Data kontak dan kantor diatur di site.js (bagian SITE). */
+  document.addEventListener("DOMContentLoaded", () => {
+    const digits = s => String(s).replace(/\D/g, "");
+    const items = [{ ico:"💬", t:"WhatsApp", d: SITE.waDisplay || "Chat langsung dengan tim kami", href: wa("Halo Mulintrip, saya ingin bertanya tentang paket wisata."), ext:true }];
+    if (SITE.email) items.push({ ico:"✉️", t:"Email", d:SITE.email, href:"mailto:" + SITE.email });
+    if (SITE.instagram) items.push({ ico:"📸", t:"Instagram", d:"@" + SITE.instagram, href:"https://instagram.com/" + SITE.instagram, ext:true });
+    (SITE.offices || []).forEach(o => { if (o.phone) items.push({ ico:"📞", t:"Telepon " + o.name, d:o.phone, href:"tel:" + digits(o.phone) }); });
+    if ((SITE.offices || []).length) items.push({ ico:"📍", t:"Kantor Kami", d:"Lihat alamat dan peta di bawah.", href:"#kantor" });
+
+    document.getElementById("kList").innerHTML = items.map(i => {
+      const inner = `<div class="k-ico">${i.ico}</div><div><strong>${esc(i.t)}</strong><span>${esc(i.d)}</span></div>`;
+      return `<a class="k-item" href="${i.href}"${i.ext ? ' target="_blank" rel="noopener"' : ""}>${inner}</a>`;
+    }).join("");
+    document.getElementById("kHours").innerHTML = `🕘 Jam Operasional<br>${esc(SITE.hours)}`;
+
+    const kantor = SITE.offices || [];
+    if (kantor.length) {
+      document.getElementById("kMap").innerHTML = `<div class="k-offices" id="kantor">
+        <h2>Kunjungi Kantor Kami</h2>
+        <p>Alamat dan lokasi kantor Mulintrip.</p>
+        <div class="k-ogrid">${kantor.map(k => {
+          const q = encodeURIComponent(k.address);
+          return `<article class="k-office">
+            <iframe title="Peta ${esc(k.name)}" loading="lazy" src="https://www.google.com/maps?q=${q}&output=embed"></iframe>
+            <div class="k-obody">
+              <h3>${esc(k.name)}</h3>
+              <address>${esc(k.address)}</address>
+              <a class="btn btn-outline" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${q}">Buka di Google Maps</a>
+            </div>
+          </article>`;
+        }).join("")}</div>
+      </div>`;
+    }
+
+    try {
+      const pk = findPackage(new URLSearchParams(location.search).get("p"));
+      if (pk) document.getElementById("fPaket").value = `${pk.name} (${pk.days} hari ${pk.nights} malam)`;
+    } catch (e) {}
+
+    document.getElementById("kForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const v = id => document.getElementById(id).value.trim();
+      if (!v("fNama")) { alert("Isi nama Anda dulu ya."); document.getElementById("fNama").focus(); return; }
+      if (!v("fEmail")) { alert("Email wajib diisi ya."); document.getElementById("fEmail").focus(); return; }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("fEmail"))) { alert("Format email belum benar. Contoh: nama@email.com"); return; }
+      const tgl = v("fTgl") ? new Date(v("fTgl") + "T00:00:00").toLocaleDateString("id-ID", { weekday:"long", day:"numeric", month:"long", year:"numeric" }) : "";
+      const lines = [
+        "Halo Mulintrip, saya ingin bertanya.", "",
+        `Nama: ${v("fNama")}`, `Email: ${v("fEmail")}`,
+        v("fHp") && `No. WhatsApp: ${v("fHp")}`,
+        v("fPaket") && `Paket/tujuan: ${v("fPaket")}`,
+        tgl && `Rencana berangkat: ${tgl}`,
+        v("fOrang") && `Jumlah peserta: ${v("fOrang")}`,
+        v("fKota") && `Kota keberangkatan: ${v("fKota")}`,
+        v("fPesan") && `\nPesan:\n${v("fPesan")}`
+      ].filter(x => x !== "" && x !== false && x !== undefined);
+      window.open(wa(lines.join("\n")), "_blank", "noopener");
+    });
+  });
+</script>
+</body>
+</html>
