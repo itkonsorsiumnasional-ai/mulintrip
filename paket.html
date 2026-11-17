@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paket Wisata | Mulintrip</title>
+<meta name="description" content="Daftar paket wisata Mulintrip. Pilih paket, lalu pesan lewat WhatsApp.">
+<meta property="og:title" content="Paket Wisata | Mulintrip">
+<meta property="og:image" content="logo.png">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- Pasang Meta Pixel di sini -->
+<!-- Pasang Google Analytics di sini -->
+</head>
+<body data-page="paket">
+
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero" style="padding-bottom:70px">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Beranda</a> / Paket Wisata</div>
+      <h1>Paket Wisata</h1>
+      <p>Pilih paket yang cocok, lalu tanyakan jadwal dan harga terbaru lewat WhatsApp.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:0">
+    <div class="wrap">
+      <form class="filter-bar" onsubmit="return false" aria-label="Saring paket">
+        <div class="field">
+          <label for="fDest">Tujuan</label>
+          <select id="fDest"><option value="all">Semua tujuan</option></select>
+        </div>
+        <div class="field">
+          <label for="fType">Jenis</label>
+          <select id="fType">
+            <option value="all">Semua jenis</option>
+            <option value="Internasional">Internasional</option>
+            <option value="Domestik">Domestik</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="fDur">Durasi</label>
+          <select id="fDur">
+            <option value="all">Berapa hari saja</option>
+            <option value="short">Sampai 4 hari</option>
+            <option value="long">5 hari atau lebih</option>
+          </select>
+        </div>
+        <button class="btn btn-outline" type="button" id="reset">Atur ulang</button>
+      </form>
+
+      <div class="result-line">
+        <p id="count" aria-live="polite"></p>
+        <div class="chips" id="chips" role="group" aria-label="Pilih cepat"></div>
+      </div>
+
+      <div class="grid" id="pkgGrid"></div>
+
+      <div class="empty" id="pkgEmpty">
+        <p>Belum ada paket yang cocok dengan pilihan Anda.</p>
+        <p>Ceritakan rencana Anda, kami bantu susun paket khusus.</p>
+        <a class="btn btn-wa" data-wa="Halo Mulintrip, saya mencari paket perjalanan tapi belum menemukan yang cocok. Boleh dibantu?" href="#">Tanya lewat WhatsApp</a>
+      </div>
+
+      <div class="info-box">
+        <strong>Sebelum memesan</strong>
+        Jadwal keberangkatan dan harga dapat berubah mengikuti musim dan ketersediaan kursi. Hubungi kami lewat WhatsApp untuk konfirmasi jadwal, rincian fasilitas, dan syarat pembayaran.
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div class="cta-box">
+        <div>
+          <h2>Ingin paket di luar daftar ini?</h2>
+          <p>Kami bisa bantu susun perjalanan sesuai tujuan, jumlah peserta, dan anggaran Anda.</p>
+        </div>
+        <a class="btn btn-wa" data-wa="Halo Mulintrip, saya ingin dibuatkan paket perjalanan khusus." href="#">Tanya lewat WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<script src="site.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const grid = document.getElementById("pkgGrid"), empty = document.getElementById("pkgEmpty"), count = document.getElementById("count");
+    const fDest = document.getElementById("fDest"), fType = document.getElementById("fType"), fDur = document.getElementById("fDur");
+    const chips = document.getElementById("chips");
+
+    [...new Set(PACKAGES.map(p => p.dest))].forEach(d => {
+      const o = document.createElement("option"); o.value = d; o.textContent = d; fDest.appendChild(o);
+    });
+    const quick = [["all","Semua"],["Internasional","Internasional"],["Domestik","Domestik"]];
+    chips.innerHTML = quick.map(([v,l]) => `<button type="button" class="chip" data-v="${v}">${l}</button>`).join("");
+
+    const q = new URLSearchParams(location.search);
+    const setIfValid = (el, v) => { if (v && [...el.options].some(o => o.value === v)) el.value = v; };
+    setIfValid(fDest, q.get("dest")); setIfValid(fType, q.get("type")); setIfValid(fDur, q.get("dur"));
+
+    function render(){
+      const list = PACKAGES.filter(p =>
+        (fDest.value === "all" || p.dest === fDest.value) &&
+        (fType.value === "all" || p.type === fType.value) &&
+        (fDur.value === "all" || (fDur.value === "short" ? p.days <= 4 : p.days >= 5))
+      );
+      grid.innerHTML = list.map(packageCard).join("");
+      grid.style.display = list.length ? "" : "none";
+      empty.style.display = list.length ? "none" : "block";
+      count.textContent = `Menampilkan ${list.length} dari ${PACKAGES.length} paket`;
+      chips.querySelectorAll(".chip").forEach(c => c.classList.toggle("on", c.dataset.v === fType.value));
+    }
+    [fDest, fType, fDur].forEach(el => el.addEventListener("change", render));
+    chips.addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) { fType.value = b.dataset.v; render(); } });
+    document.getElementById("reset").addEventListener("click", () => { fDest.value = fType.value = fDur.value = "all"; render(); });
+    render();
+  });
+</script>
+</body>
+</html>
