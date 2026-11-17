@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dokumentasi | Mulintrip</title>
+<meta name="description" content="Dokumentasi perjalanan bersama Mulintrip: foto keberangkatan dan kegiatan tour.">
+<meta property="og:title" content="Dokumentasi | Mulintrip">
+<meta property="og:image" content="logo.png">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<!-- Pasang Meta Pixel di sini -->
+<!-- Pasang Google Analytics di sini -->
+</head>
+<body data-page="dokumentasi">
+
+<div id="site-header"></div>
+
+<main>
+  <section class="page-hero">
+    <div class="wrap">
+      <div class="crumbs"><a href="index.html">Beranda</a> / Dokumentasi</div>
+      <h1>Dokumentasi</h1>
+      <p>Momen perjalanan bersama Mulintrip. Lihat langsung suasana keberangkatan dan kegiatan tour kami.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="chips" id="chips" role="group" aria-label="Saring dokumentasi"></div>
+      <div class="gal" id="gal"></div>
+
+      <div class="empty" id="empty">
+        <div style="font-size:2.6rem" aria-hidden="true">📸</div>
+        <h2 style="margin:8px 0">Dokumentasi segera hadir</h2>
+        <p>Foto perjalanan peserta kami akan ditampilkan di sini. Sementara itu, ceritakan rencana liburan Anda.</p>
+        <a class="btn btn-wa" data-wa="Halo Mulintrip, saya ingin melihat dokumentasi perjalanan sebelumnya." href="#">Tanya lewat WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="wrap">
+      <div class="cta-box">
+        <div>
+          <h2>Siap jadi bagian dari dokumentasi berikutnya?</h2>
+          <p>Pilih paket dan tanggal keberangkatan, kami bantu sampai Anda berangkat.</p>
+        </div>
+        <a class="btn btn-wa" href="paket.html">Lihat paket wisata</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="site-footer"></div>
+
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Foto dokumentasi">
+  <button class="x" id="lbX" aria-label="Tutup">&times;</button>
+  <button class="pv" id="lbP" aria-label="Foto sebelumnya">&#8249;</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption></figure>
+  <button class="nx" id="lbN" aria-label="Foto berikutnya">&#8250;</button>
+</div>
+
+<script src="site.js"></script>
+<script>
+/* ============================================================
+   DAFTAR FOTO DOKUMENTASI
+   Cara menambah foto: unggah file foto ke folder yang sama dengan
+   index.html, lalu tambahkan satu baris di bawah ini.
+     src : nama file foto persis (huruf besar/kecil harus sama)
+     cap : keterangan singkat di bawah foto
+     cat : kelompok (bebas, misalnya "Malaysia", "Bali", "Keberangkatan")
+   Contoh:
+     { src:"dok-01.jpg", cap:"Rombongan di Petronas Twin Towers", cat:"Malaysia" },
+   Selama daftar masih kosong, halaman menampilkan "Dokumentasi segera hadir".
+   ============================================================ */
+const DOCS = [
+];
+
+document.addEventListener("DOMContentLoaded", () => {
+  const gal = document.getElementById("gal"), chips = document.getElementById("chips"), empty = document.getElementById("empty");
+  const lb = document.getElementById("lb"), lbImg = document.getElementById("lbImg"), lbCap = document.getElementById("lbCap");
+  let shown = [], idx = 0, cat = "Semua";
+
+  if (!DOCS.length) { empty.style.display = "block"; chips.style.display = "none"; return; }
+
+  const cats = ["Semua", ...new Set(DOCS.map(d => d.cat).filter(Boolean))];
+  chips.innerHTML = cats.map(c => `<button type="button" class="chip${c === cat ? " on" : ""}" data-c="${c}">${c}</button>`).join("");
+
+  function render(){
+    shown = DOCS.filter(d => cat === "Semua" || d.cat === cat);
+    gal.innerHTML = shown.map((d, i) =>
+      `<button type="button" class="shot" data-i="${i}" aria-label="Perbesar foto: ${d.cap || ""}">
+         <img src="${d.src}" alt="${d.cap || "Dokumentasi Mulintrip"}" loading="lazy" onerror="this.closest('.shot').style.display='none'">
+         ${d.cap ? `<span>${d.cap}</span>` : ""}
+       </button>`).join("");
+    chips.querySelectorAll(".chip").forEach(b => b.classList.toggle("on", b.dataset.c === cat));
+  }
+  function open(i){
+    idx = (i + shown.length) % shown.length;
+    lbImg.src = shown[idx].src; lbImg.alt = shown[idx].cap || "";
+    lbCap.textContent = shown[idx].cap || "";
+    lb.classList.add("open");
+  }
+  const close = () => lb.classList.remove("open");
+
+  chips.addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) { cat = b.dataset.c; render(); } });
+  gal.addEventListener("click", e => { const b = e.target.closest(".shot"); if (b) open(+b.dataset.i); });
+  document.getElementById("lbX").onclick = close;
+  document.getElementById("lbP").onclick = () => open(idx - 1);
+  document.getElementById("lbN").onclick = () => open(idx + 1);
+  lb.addEventListener("click", e => { if (e.target === lb) close(); });
+  document.addEventListener("keydown", e => {
+    if (!lb.classList.contains("open")) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowLeft") open(idx - 1);
+    if (e.key === "ArrowRight") open(idx + 1);
+  });
+  render();
+});
+</script>
+</body>
+</html>
