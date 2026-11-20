@@ -278,16 +278,16 @@ const findPackage = slug => PACKAGES.find(p => p.slug === slug);
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
 
 const NAV = [
-  ["home","index.html","Beranda"],
-  ["paket","paket.html","Paket Wisata"],
-  ["layanan","layanan.html","Layanan"],
-  ["dokumentasi","dokumentasi.html","Dokumentasi"],
-  ["kontak","kontak.html","Kontak"]
+  ["home","./","Beranda"],
+  ["paket","paket","Paket Wisata"],
+  ["layanan","layanan","Layanan"],
+  ["dokumentasi","dokumentasi","Dokumentasi"],
+  ["kontak","kontak","Kontak"]
 ];
 
 function packageCard(p){
   const msg = `Halo Mulintrip, saya tertarik paket ${p.name} (${p.days} hari ${p.nights} malam). Boleh minta jadwal dan harga terbaru?`;
-  const detail = `detail.html?p=${p.slug}`;
+  const detail = `detail?p=${p.slug}`;
   const price = p.price
     ? `<small>Mulai dari</small><strong>${rupiah(p.price)}</strong>/orang`
     : `<small>Harga</small><strong>Hubungi kami</strong>`;
@@ -319,7 +319,7 @@ function renderHeader(active){
   return `
   <header>
     <div class="wrap nav">
-      <a href="index.html" class="brand" aria-label="${SITE.name}">
+      <a href="./" class="brand" aria-label="${SITE.name}">
         <img src="logo.png" alt="Logo Mulintrip" width="50" height="50" onerror="this.style.display='none'">
         <div>MULINTRIP<small>${SITE.tagline.toUpperCase()}</small></div>
       </a>
