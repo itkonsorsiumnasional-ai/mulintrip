@@ -204,7 +204,7 @@ const SCH_STD = {
    image : nama file gambar di folder website. Kosongkan ("") untuk memakai warna gradasi
    ============================================================ */
 const PACKAGES = [
-  { slug:"3-negara-7d6n", name:"Tour 3 Negara Asia 7D6N", dest:"Malaysia Singapore Thailand", type:"3 Negara", days:7, nights:6, color:"#073b6e,#1b7fd0", price:6990000, tag:"", image:"tour-3-negara-7d6n.png",
+  { slug:"3-negara-7d6n", name:"Tour 3 Negara Asia 7D6N", dest:"Malaysia Singapore Thailand", type:"3 Negara", days:7, nights:6, color:"#073b6e,#1b7fd0", price:6990000, tag:"", image:"tour-3-negara-asia-7d6n.png",
     items:["Malaysia, Singapore, Thailand (Hatyai)","Jadwal Okt 2026 sampai Des 2027","Bisa berangkat dari kota lain"],
     schedule:["Keberangkatan mingguan, umumnya setiap Rabu. Di periode high season ada tambahan tanggal","Periode Okt 2026 sampai Des 2027","Bisa berangkat dari seluruh kota/airport di Indonesia","Meeting point: Bandara KLIA, Kuala Lumpur"],
     departures: sched(SCH_7D6N),
@@ -215,7 +215,7 @@ const PACKAGES = [
     costs: ["Single supplement: Rp 1.950.000 (low season) / Rp 2.750.000 (peak season)"].concat(DP_MY),
     terms: TERMS_MY },
 
-  { slug:"3-negara-bangkok-pattaya-8d7n", name:"Tour 3 Negara Asia 8D7N Bangkok Pattaya", dest:"Malaysia Singapore Thailand", type:"3 Negara", days:8, nights:7, color:"#0b64b0,#2f9be0", price:13200000, tag:"", image:"tour-3-negara-bangkok-pattaya-8d7n.png",
+  { slug:"3-negara-bangkok-pattaya-8d7n", name:"Tour 3 Negara Asia 8D7N Bangkok Pattaya", dest:"Malaysia Singapore Thailand", type:"3 Negara", days:8, nights:7, color:"#0b64b0,#2f9be0", price:13200000, tag:"", image:"tour-3-negara-asia-bangkok-pattaya-8d7n.png",
     items:["Malaysia, Singapore, Bangkok, Pattaya","Jadwal Okt 2026 sampai Des 2027","Itinerari 8 hari lengkap"],
     schedule:["Keberangkatan mingguan, umumnya setiap Rabu. Di periode high season ada tambahan tanggal","Periode Okt 2026 sampai Des 2027","Bisa berangkat dari kota lainnya","Meeting point: Bandara KLIA (Kuala Lumpur) dan Bandara BKK (Bangkok)"],
     departures: sched(SCH_STD),
@@ -226,7 +226,7 @@ const PACKAGES = [
     costs: ["Single supplement: Rp 3.000.000 (low season) / Rp 4.000.000 (peak season)", "DP per orang (low season): berangkat dari Jakarta Rp 6.500.000, dari Surabaya Rp 8.500.000, Land Tour Only Rp 3.500.000", "Pelunasan 20 hari sebelum tanggal keberangkatan"],
     terms: TERMS_8D },
 
-  { slug:"2-negara-4d3n", name:"Tour 2 Negara Malaysia Singapore 4D3N", dest:"Malaysia Singapore", type:"2 Negara", days:4, nights:3, color:"#073b6e,#0b64b0", price:6390000, tag:"", image:"tour-2-negara-4d3n.png",
+  { slug:"2-negara-4d3n", name:"Tour 2 Negara Malaysia Singapore 4D3N", dest:"Malaysia Singapore", type:"2 Negara", days:4, nights:3, color:"#073b6e,#0b64b0", price:6390000, tag:"", image:"tour-2-negara-asia-4d3n.png",
     items:["Malaysia dan Singapore","Jadwal Okt 2026 sampai Des 2027","Cocok untuk liburan singkat"],
     schedule:["Keberangkatan mingguan, umumnya setiap Rabu. Di periode high season ada tambahan tanggal","Periode Okt 2026 sampai Des 2027","Bisa berangkat dari seluruh kota/airport di Indonesia","Meeting point: Bandara KLIA, Kuala Lumpur"],
     departures: sched(SCH_STD),
@@ -237,7 +237,7 @@ const PACKAGES = [
     costs: ["Single supplement: Rp 1.450.000 (low season) / Rp 2.200.000 (peak season)"].concat(DP_MY),
     terms: TERMS_MY },
 
-  { slug:"2-negara-5d4n", name:"Tour 2 Negara Malaysia Singapore 5D4N", dest:"Malaysia Singapore", type:"2 Negara", days:5, nights:4, color:"#1b7fd0,#6cc0f2", price:6590000, tag:"", image:"tour-2-negara-5d4n.png",
+  { slug:"2-negara-5d4n", name:"Tour 2 Negara Malaysia Singapore 5D4N", dest:"Malaysia Singapore", type:"2 Negara", days:5, nights:4, color:"#1b7fd0,#6cc0f2", price:6590000, tag:"", image:"tour-2-negara-asia-5d4n.png",
     items:["Malaysia dan Singapore","Waktu lebih longgar di tiap kota","Jadwal Okt 2026 sampai Des 2027"],
     schedule:["Keberangkatan mingguan, umumnya setiap Rabu. Di periode high season ada tambahan tanggal","Periode Okt 2026 sampai Des 2027","Bisa berangkat dari kota lainnya","Meeting point: Bandara KLIA, Kuala Lumpur"],
     departures: sched(SCH_STD),
