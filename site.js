@@ -6,16 +6,16 @@
 const SITE = {
   name: "Mulintrip",
   tagline: "Enjoy Your Trip",
-  waNumber: "",            // format 62..., tanpa + atau 0 di depan. Contoh: "628123456789"
-  waDisplay: "",           // contoh: "0812-3456-789"
-  email: "",               // contoh: "info@mulintrip.com"
-  instagram: "",           // tanpa @
-  threads: "",             // tanpa @
-  facebook: "",            // boleh link lengkap
-  tiktok: "",              // tanpa @
+  waNumber: "6285175040812",            // format 62..., tanpa + atau 0 di depan. Contoh: "628123456789"
+  waDisplay: "0851-7504-0812",           // contoh: "0812-3456-789"
+  email: "mulintrip@gmail.com",               // contoh: "info@mulintrip.com"
+  instagram: "mulintrip",           // tanpa @
+  threads: "mulintrip",             // tanpa @
+  facebook: "mulintrip",            // boleh link lengkap
+  tiktok: "mulintrip",              // tanpa @
   hours: "Senin sampai Sabtu, 09.00 sampai 17.00",
   offices: [
-    // { name:"Head Office", address:"Isi alamat kantor di sini", phone:"" }
+    // { name:"Head Office", address:"Ruko Venice Blok JE No.8 Jl. Boulevard Graha Raya Bintarou - Tangerang Selatan", phone:"(021) 5314 0007" }
   ]
 };
 
